@@ -5,6 +5,11 @@ The server should ideally be run somewhere that it can be publically accessed, s
 Buttons prefixed with '>' represent links, and take you to another page. Buttons with some other name represent some action.  
 The program should be pretty self explanatory.
 
+####Dependencies and running
+The current dependencies are
+	* flask
+	* flask_sqlalchemy
+
 To run in a development environment for testing, simply
 ```bash
 cd scanny
@@ -17,6 +22,11 @@ I recommend using -h 0.0.0.0 so you can access the webpage from across your LAN 
 To add grocery items:
 	- From the home page, press add
 	- Scan items using your scanner, follow the prompts.
+
+Removing grocery items is pretty much the same. The oldest item will always be removed first.
+
+You can click on a grocery item on the home page to manually add/remove it.
+
 
 #### Important Notes
 At some points, the program will prompt you to press "Up" to continue. That actually means you have to press the escape key. I am using a very small keyboard for this project and only had an "up" keycap available. In the future I might make these warning messages configurable.
