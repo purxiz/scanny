@@ -5,7 +5,7 @@ The server should ideally be run somewhere that it can be publically accessed, s
 Buttons prefixed with '>' represent links, and take you to another page. Buttons with some other name represent some action.  
 The program should be pretty self explanatory.
 
-####Dependencies and running
+#### Dependencies and running
 The current dependencies are
 	* flask
 	* flask_sqlalchemy
