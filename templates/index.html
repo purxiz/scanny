@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block javascript %}
+	{% include "index.js" %}
+{% endblock %}
+
+{% block title %}Welcome to Scanny{% endblock %}
+
+{% block item %}
+{% for item in pantry_items %}
+	<div class="item item-clickable" name="{{ item.name }}">&#62; {{ item.name }} - {{ item.count }}</div>
+{% endfor %}
+{% endblock %}
+
+{% block right %}
+<input class="right-item" id='search' type='text' placeholder='search...' autoComplete='off'/>
+<button class="right-item" type="button" onclick="document.location='add'">&#62; ADD</button>
+<button class="right-item" type="button" onclick="document.location='rem'">&#62; REMOVE</button>
+{% endblock %}

@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block javascript %}
+	{% include "add.js" %}
+{% endblock %}
+
+{% block warn %}
+<div class="warn" id="unique_violation" style="display:none;">That name is already in use, try again</div>
+<div class="warn" id="not_found" style="display:none;">Not Found in database, press UP to add Name</div>
+{% endblock %}
+
+{% block item %}
+	{% for item in pantry_items %}
+		<div class="item">{{ item.name }} - {{ item.purchase_date.strftime('%m-%d-%y %H:%M:%S') }}</div>
+	{% endfor %}
+{% endblock %}
+
+{% block title %}Scanny New Items{% endblock %}
+{% block right %}
+<input type="text" class="ui-hidden-accessible" id="code_input">
+<input class="right-item" id="name" type='text' placeholder='Name...' autoComplete='off'/>
+<button class="right-item" id="submit" type="button">SUBMIT</button>
+<button class="right-item" type="button" onclick="document.location='/'">&#62; HOME</button>
+{% endblock %}

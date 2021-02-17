@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block javascript %}
+	{% include "item.js" %}
+{% endblock %}
+
+{% block title %}Scanny's account of <span id="count">{{ pantry_items|length }}</span> {{ item }}{% endblock %}
+
+{% block item %}
+{% for item in pantry_items %}
+	<div class="item">{{ item.name }} - {{ item.purchase_date.strftime('%m-%d-%y %H:%M:%S') }}</div>
+{% endfor %}
+{% endblock %}
+
+{% block right %}
+<button class="right-item" id='add' type='button'>ADD</button>
+<button class="right-item" id='remove' type="button">REMOVE</button>
+<button class="right-item" type="button" onclick="document.location='/'">&#62; HOME</button>
+{% endblock %}

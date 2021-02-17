@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block javascript %}
+	{% include "rem.js" %}
+{% endblock %}
+
+{% block warn %}
+<div class="warn" id="not_found" style="display:none;">Not Found in database, press UP to continue</div>
+{% endblock %}
+
+{% block title %}Scanny Shows Removed on Left{% endblock %}
+{% block right %}
+<input type="text" class="ui-hidden-accessible" id="code_input">
+<button class="right-item" id="last_item" type='button'>&#62; LAST</button>
+<button class="right-item" type="button" onclick="document.location='/add'">&#62; ADD</button>
+<button class="right-item" type="button" onclick="document.location='/'">&#62; HOME</button>
+{% endblock %}
