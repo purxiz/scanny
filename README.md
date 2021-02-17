@@ -6,9 +6,9 @@ Buttons prefixed with '>' represent links, and take you to another page. Buttons
 The program should be pretty self explanatory.
 
 #### Dependencies and running
-The current dependencies are
-	* flask
-	* flask_sqlalchemy
+The current dependencies are  
+* flask
+* flask_sqlalchemy
 
 To run in a development environment for testing, simply
 ```bash
@@ -19,9 +19,9 @@ flask run -h 0.0.0.0
 I recommend using -h 0.0.0.0 so you can access the webpage from across your LAN during development, especially if you are running the server on a raspberry pi.
 
 #### Basic Usage
-To add grocery items:
-	- From the home page, press add
-	- Scan items using your scanner, follow the prompts.
+To add grocery items:  
+- From the home page, press add
+- Scan items using your scanner, follow the prompts.
 
 Removing grocery items is pretty much the same. The oldest item will always be removed first.
 
