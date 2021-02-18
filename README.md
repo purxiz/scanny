@@ -2,6 +2,7 @@
 Scanny is a tool for keeping track of grocery lists using a barcode scanner. It runs as a flask server, and is primarily designed for use with a raspberry pi and small touch screen. The only required hardware however is a barcode scanner that types the barcode as standard input and then presses enter afterwards.   
 The data is stored in a file called db.sqlite, using SQLAlchemy with SQLITE (obviously).  
 The server should ideally be run somewhere that it can be publically accessed, since the css handles mobile devices as well as I can be bothered to make it.  
+(Please note I'm using some really ugly css tricks to detect mobile devices (and keep them working with the on-screen keyboard changin the screen orientation to landscape). You may want to look into the media tags I use in `static/main.css` to get the display working correctly with your device. I'm using pixel ratio. There's a website called cssmediaqueries.com you can access to help differentiate between your devices.)  
 Buttons prefixed with '>' represent links, and take you to another page. Buttons with some other name represent some action.  
 The program should be pretty self explanatory.
 

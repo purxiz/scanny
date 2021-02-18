@@ -10,7 +10,7 @@ body {
 	src: url(assets/ModeSeven.ttf);
 }
 
-@media (orientation: landscape) {
+@media (orientation: landscape) and (-webkit-max-device-pixel-ratio: 1.5) {
 	.content {
 		position: absolute;
 		top: 3em;
@@ -18,16 +18,20 @@ body {
 		width: 100%;
 		display: grid;
 		grid-template-columns: 60% 1fr;
+		left: 0;
+		right: 0;
 	}
 }
 
-@media (orientation: portrait) {
+@media (orientation: portrait) or (-webkit-min-device-pixel-ratio: 2) {
 	.content {
 		position: absolute;
 		top: 3em;
 		width: 100%;
 		display: flex;
 		flex-direction: column-reverse;
+		left: 0;
+		right: 0;
 	}
 	.right {
 		max-height: 12em;
