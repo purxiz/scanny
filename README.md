@@ -54,3 +54,31 @@ after that, running the "production" version of the app should be as simple as
 sudo systemctl enable scanny.service
 sudo systemctl start scanny.service
 ```
+
+this will start the server on a unix socket, then I recommend using nginx or apache to deliver it.
+A simple nginx server block might look like:
+
+```
+server {
+	server_name url.com www.url.com;
+	
+	location / {
+		include uwsgi_params;
+		uwsgi_pass unix:/var/www/scanny/scanny.sock;
+	}
+	
+	listen 80;
+}
+```
+
+This is a minimal working configuration, ideally you'd want to cache the jinja templates and serve them cached, or use a different templating engine that can build to static files. 
+
+However, given the extremely small scope of this project and the expected value of 1-10 users/instance, I don't think that's necessary, so I'm going to call it out of scope.
+
+
+#### Roadmap
+The only feature I have planned is to add some very simple sort of login / session handling. 
+
+I don't intend for the data in this app to ever be truly secret, since it's a glorified grocery list, but it would be nice to be minimally protected from people stumbling across your URL and editing your grocery inventory.
+
+Of course, since I'm running this only on my LAN at the moment, this feature will probably not be coming in the immediate future.
