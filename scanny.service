@@ -1,0 +1,13 @@
+[Unit]
+Description=uWSGI instance to serve scanny
+After=network.target
+
+[Service]
+User=<USER>
+Group=www-data
+WorkingDirectory=/var/www/scanny
+Environment="PATH=/var/www/scanny/scanny_venv/bin"
+ExecStart=/var/www/scanny/scanny_venv/bin/uwsgi --ini scanny.ini
+
+[Install]
+WantedBy=multi-user.target
