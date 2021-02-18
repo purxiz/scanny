@@ -17,7 +17,7 @@ body {
 		bottom: 10px;
 		width: 100%;
 		display: grid;
-		grid-template-columns: 60% 1fr;
+		grid-template-columns: 55% 1fr;
 		left: 0;
 		right: 0;
 	}
@@ -59,7 +59,7 @@ body {
 
 .right-item {
 	height: 30%;
-	width: 80%;
+	width: 95%;
 	background: none;
 	color: white;
 	font-size: 3em;
