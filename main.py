@@ -14,11 +14,14 @@ class PantryItem(db.Model):
 
 class Barcode(db.Model):
 	code = db.Column(db.String(30), primary_key=True)
-	name = db.Column(db.String(100), db.ForeignKey(PantryItem.name), unique=True)
+	name = db.Column(db.String(100), db.ForeignKey(PantryItem.name))
 	
 @app.route('/')
 def index():
-	pantry_items = Barcode.query.join(PantryItem, isouter=True).add_columns(Barcode.name, db.func.count(PantryItem.name).label('count')).group_by(Barcode.name).all()
+	names = Barcode.query.group_by(Barcode.name).subquery()
+	pantry_items = PantryItem.query.join(names, PantryItem.name == names.c.name)\
+		.add_columns(PantryItem.name, db.func.count().label('count'))\
+		.group_by(PantryItem.name).all()
 	return render_template('index.html', pantry_items=pantry_items)
 
 @app.route('/add')
