@@ -9,7 +9,7 @@ db = SQLAlchemy(app)
 
 class Item(db.Model):
 	id = db.Column(db.Integer, primary_key=True)
-	name = db.Column(db.String(100))
+	name = db.Column(db.String(100), unique=True)
 
 class PantryItem(db.Model):
 	id = db.Column(db.Integer, primary_key=True)
@@ -79,9 +79,11 @@ def add_by_barcode():
 @app.route('/add_barcode_and_item')
 def add_barcode_and_item():
 	name = request.args.get('name').strip('\n')
-	item = Item(name=name)
-	db.session.add(item)
-	db.session.commit()
+	item = Item.query.filter_by(name=name).first();
+	if item is None:
+		item = Item(name=name)
+		db.session.add(item)
+		db.session.commit()
 	barcode = Barcode(item_id=item.id, code=request.args.get('code'))
 	pantry_item = PantryItem(item_id=item.id)
 	db.session.add(barcode)
