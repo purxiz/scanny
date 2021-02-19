@@ -26,7 +26,7 @@ class Barcode(db.Model):
 def index():
 	pantry_items = Item.query.join(PantryItem, isouter=True)\
 		.add_columns(Item.name, Item.id, db.func.count(PantryItem.item_id).label('count'))\
-		.group_by(Item.id).all()
+		.group_by(Item.id).order_by(Item.name).all()
 	return render_template('index.html', pantry_items=pantry_items)
 
 @app.route('/rename')
