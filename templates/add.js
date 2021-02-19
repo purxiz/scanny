@@ -2,6 +2,9 @@ $(document).ready(function() {
 
 	focus_code_input();
 
+	$('.item').item_clickable();
+	console.log('hi');
+
 	function add_new_item(name, code) {
 		$('#name').off('');
 		$('#submit').off('');
@@ -18,18 +21,11 @@ $(document).ready(function() {
 				listen_for_name_input();
 				return;
 			}
-			add_visual_item(response);
+			$.add_visual_item(response);
 			$('#code_input').val('');
 			$('#name').val('');
 			focus_code_input();
 		});
-	}
-
-	function add_visual_item(item) {
-		$('#left').prepend(
-			$('<div>').addClass('item').html(item.name + ' - ' + item.purchase_date)
-		);
-		return 0;
 	}
 
 	function listen_for_name_input() {
@@ -54,11 +50,12 @@ $(document).ready(function() {
     								offset: 0,
 							},
 						}).then(function(response) {
-    							complete_string = response.name;
+							complete_string = response.name;
 							$('#name_complete').val(complete_string);
 						});
     					} else {
-						$('#name_complete').val('');
+							$('#name_complete').val('');
+							complete_string = '';
     					}
 					if(e.key === 'Enter') {
 						add_new_item($('#name').val(), $('#code_input').val());
@@ -93,7 +90,7 @@ $(document).ready(function() {
 						listen_for_name_input();
 					} else {
 						$('#code_input').val('');
-						add_visual_item(response);
+						$.add_visual_item(response);
 					}
 				});
 			}

@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 
 {% block javascript %}
+	{% include "shared.js" %}
 	{% include "add.js" %}
 {% endblock %}
 
@@ -11,7 +12,7 @@
 
 {% block item %}
 	{% for item in pantry_items %}
-		<div class="item">{{ item.name }} - {{ item.purchase_date.strftime('%m-%d-%y %H:%M:%S') }}</div>
+		<div class="item" item_id="{{ item.id }}">{{ item.name }} - {{ item.purchase_date.strftime('%m-%d-%y %H:%M:%S') }}</div>
 	{% endfor %}
 {% endblock %}
 

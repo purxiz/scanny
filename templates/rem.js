@@ -7,14 +7,6 @@ $(document).ready(function() {
 
 	focus_code_input();
 
-	function add_visual_item(item) {
-		console.log(item);
-		$('#left').prepend(
-			$('<div>').addClass('item').html(item.name + ' - ' + item.purchase_date)
-		);
-		return 0;
-	}
-
 	function listen_for_continue_input() {
 		$('#code_input').blur();
 		$(document).keydown(function(e) {
@@ -48,7 +40,7 @@ $(document).ready(function() {
 					} else {
 						last_item = response.id;
 						$('#code_input').val('');
-						add_visual_item(response);
+						$.add_visual_item(response);
 					}
 				});
 			}

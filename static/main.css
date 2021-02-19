@@ -65,6 +65,7 @@ body {
 	font-size: 3em;
 	border: 3px solid;
 	font-family: ModeSeven;
+	box-sizing: border-box;
 }
 
 .right-subitem {
@@ -74,6 +75,8 @@ body {
 	color: white;
 	font-size: 1em;
 	font-family: ModeSeven;
+	resize: none;
+	border: none;
 }
 
 .behind {

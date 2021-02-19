@@ -74,7 +74,7 @@ def add_by_barcode():
 	pantry_item = PantryItem(item_id=str(item[1]))
 	db.session.add(pantry_item)
 	db.session.commit()
-	return jsonify({ "name" : item[2], "purchase_date": pantry_item.purchase_date.strftime('%m-%d-%y %H:%M:%S') })
+	return jsonify({ "name" : item[2], "item_id": item.id, "purchase_date": pantry_item.purchase_date.strftime('%m-%d-%y %H:%M:%S') })
 
 @app.route('/add_barcode_and_item')
 def add_barcode_and_item():
@@ -89,7 +89,7 @@ def add_barcode_and_item():
 	db.session.add(barcode)
 	db.session.add(pantry_item)
 	db.session.commit()
-	return jsonify({ "name": item.name, "purchase_date": pantry_item.purchase_date.strftime('%m-%d-%y %H:%M:%S') })
+	return jsonify({ "name": item.name, "id": item.id, "purchase_date": pantry_item.purchase_date.strftime('%m-%d-%y %H:%M:%S') })
 
 @app.route('/remove_by_id')
 def remove_by_id():

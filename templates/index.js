@@ -15,10 +15,5 @@ $(document).ready(function() {
 			$('#search').focus();
 		}, 20);
 	});
-	$('.item').each(function(){
-		$(this).addClass('item-clickable');
-		$(this).click(function() {
-			document.location = '/item?id=' + $(this).attr('item_id');
-		});
-	});
+	$('.item').item_clickable();
 });
