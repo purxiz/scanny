@@ -84,6 +84,11 @@ I don't intend for the data in this app to ever be truly secret, since it's a gl
 
 Of course, since I'm running this only on my LAN at the moment, this feature will probably not be coming in the immediate future.
 
-I now have 2 more planned features, the ability to edit the names of items, and the ability to add items without scanning a barcode... I'd like to keep the 3 fields on every screen and list on the left UI though, so I'll have to figure out how to do that exactly...
+I now have 2 more planned features, ~~the ability to edit the names of items~~ (done), ~~and the ability to add items without scanning a barcode... I'd like to keep the 3 fields on every screen and list on the left UI though, so I'll have to figure out how to do that exactly...~~ (done)
 
-I think I'll add a third table to associate a pantry_item_id with a name
+~~I think I'll add a third table to associate a pantry_item_id with a name~~ (done)
+
+#### Wishlist
+I'll get around to these eventually
+
+- show total added on each item as it's added in current add session on add screen
