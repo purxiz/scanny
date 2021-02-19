@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, jsonify 
 from flask_sqlalchemy import SQLAlchemy
 import sys
 
@@ -28,6 +28,36 @@ def index():
 		.add_columns(Item.name, Item.id, db.func.count(PantryItem.item_id).label('count'))\
 		.group_by(Item.id).all()
 	return render_template('index.html', pantry_items=pantry_items)
+
+@app.route('/rename')
+def rename():
+	item = Item.query.filter_by(id=request.args.get('item_id')).one()
+	return render_template('rename.html', name=item.name, id=request.args.get('item_id'))
+
+@app.route('/rename_by_id')
+def rename_by_id():
+	item = Item.query.filter_by(id=request.args.get('id')).one()
+	item.name = request.args.get('name').strip('\n')
+	try:
+		db.session.commit()
+	except Exception as err:
+		return jsonify({ "err": "unique_violation" })
+	return jsonify({ "name": item.name })
+
+@app.route('/rename_by_name')
+def rename_by_name():
+	print('renaming by name')
+	barcodes = Barcode.query.filter_by(item_id=request.args.get('id')).all()
+	pantry_items = PantryItem.query.filter_by(item_id=request.args.get('id')).all()
+	item = Item.query.filter_by(name=request.args.get('name').strip('\n')).one()
+	for barcode in barcodes:
+		barcode.item_id = item.id
+	for pantry_item in pantry_items:
+		pantry_item.item_id = item.id
+	item_to_remove = Item.query.filter_by(id=request.args.get('id')).one()
+	db.session.delete(item_to_remove)
+	db.session.commit()
+	return jsonify({"redirect": "/item?id=" + str(item.id)})
 
 @app.route('/add')
 def add():

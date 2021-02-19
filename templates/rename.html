@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block javascript %}
+	{% include "shared.js" %}
+	{% include "rename.js" %}
+{% endblock %}
+
+{% block warn %}
+<div class="warn" id="blank" style="display:none;">Name cannot be blank<br> Press up</div>
+<div class="warn" id="unique_violation" style="display:none;">Name in Use, up to retry, down to continue</div>
+{% endblock %}
+
+{% block title %}Renaming <span id="title_name">{{ name }}</span>{% endblock %}
+
+{% block right %}
+<div class="right-item">
+    <textarea class="right-subitem" id="name" placeholder='Name...' autoComplete='off'></textarea>
+    <textarea class="right-subitem behind" id="name_complete" autoComplete="off" disabled></textarea>
+</div>
+<button class="right-item" id="submit" type="button">SUBMIT</button>
+<button class="right-item" type="button" onclick="window.history.back()">&#62; BACK</button>
+{% endblock %}

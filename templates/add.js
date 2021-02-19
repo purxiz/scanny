@@ -38,29 +38,11 @@ $(document).ready(function() {
 				$(document).off();
 				$('.warn').hide();
 				$('#name').keyup(function(e) {
-    					if(e.key ===  'Escape') {
-						$('#name').val(complete_string);
-						$('#name_complete').val('');
-    					}
-    					else if($('#name').val().length > 1) {
-						$.ajax({
-							url: '/item_most_likely',
-							data: {
-    								name: $('#name').val(),
-    								offset: 0,
-							},
-						}).then(function(response) {
-							complete_string = response.name;
-							$('#name_complete').val(complete_string);
-						});
-    					} else {
-							$('#name_complete').val('');
-							complete_string = '';
-    					}
 					if(e.key === 'Enter') {
 						add_new_item($('#name').val(), $('#code_input').val());
 					}
 				});
+				$('#name').inline_complete();
 				$('#name').focus();
 				$('#submit').click(function(e) {
 					add_new_item($('#name').val(), $('#code_input').val());

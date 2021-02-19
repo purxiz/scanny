@@ -3,7 +3,7 @@
 	{% include "item.js" %}
 {% endblock %}
 
-{% block title %}Scanny's account of <span id="count">{{ pantry_items|length }}</span> {{ name }}{% endblock %}
+{% block title %}Scanny's account of <span id="count">{{ pantry_items|length }}</span> <a href="/rename?item_id={{ item }}">{{ name }}</a>{% endblock %}
 
 {% block item %}
 {% for item in pantry_items %}
@@ -14,5 +14,5 @@
 {% block right %}
 <button class="right-item" id='add' type='button'>ADD</button>
 <button class="right-item" id='remove' type="button">REMOVE</button>
-<button class="right-item" type="button" onclick="document.location='/'">&#62; HOME</button>
+<button class="right-item" type="button" onclick="window.history.back()">&#62; BACK</button>
 {% endblock %}
