@@ -2,9 +2,9 @@ $(document).ready(function() {
 
 	$('#add').click(function() {
 		$.ajax({
-			url: '/add_by_name',
+			url: '/add_by_id',
 			data: {
-				name: '{{ item }}'
+				id: '{{ item }}'
 			}
 		}).then(function(response) {
 			add_visual_item(response);
@@ -13,9 +13,9 @@ $(document).ready(function() {
 	});
 	$('#remove').click(function() {
 		$.ajax({
-			url: '/remove_by_name',
+			url: '/remove_by_id',
 			data: {
-				name: '{{ item }}'
+				id: '{{ item }}'
 			}
 		}).then(function(response) {
 			if(response.err && response.err === 'none_exists') {

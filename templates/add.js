@@ -35,12 +35,31 @@ $(document).ready(function() {
 	function listen_for_name_input() {
 		$('#name').blur();
 		$('#code_input').blur();
+		let complete_string = '';
 		$(document).keydown(function(e) {
 			console.log(e.key);
 			if(e.key === 'Escape') {
 				$(document).off();
 				$('.warn').hide();
 				$('#name').keyup(function(e) {
+    					if(e.key ===  'Escape') {
+						$('#name').val(complete_string);
+						$('#name_complete').val('');
+    					}
+    					else if($('#name').val().length > 1) {
+						$.ajax({
+							url: '/item_most_likely',
+							data: {
+    								name: $('#name').val(),
+    								offset: 0,
+							},
+						}).then(function(response) {
+    							complete_string = response.name;
+							$('#name_complete').val(complete_string);
+						});
+    					} else {
+						$('#name_complete').val('');
+    					}
 					if(e.key === 'Enter') {
 						add_new_item($('#name').val(), $('#code_input').val());
 					}
@@ -80,6 +99,4 @@ $(document).ready(function() {
 			}
 		});
 	}
-
-
 });

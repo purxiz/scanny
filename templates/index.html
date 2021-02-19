@@ -7,7 +7,7 @@
 
 {% block item %}
 {% for item in pantry_items %}
-	<div class="item item-clickable" name="{{ item.name }}">&#62; {{ item.name }} - {{ item.count }}</div>
+	<div class="item item-clickable" item_id="{{ item.id }}">&#62; {{ item.name }} - {{ item.count }}</div>
 {% endfor %}
 {% endblock %}
 

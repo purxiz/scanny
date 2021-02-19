@@ -67,13 +67,29 @@ body {
 	font-family: ModeSeven;
 }
 
+.right-subitem {
+	height: 100%;
+	width: 100%;
+	background: none;
+	color: white;
+	font-size: 1em;
+	font-family: ModeSeven;
+}
+
+.behind {
+	position: relative;
+	top: -100%;
+	color: grey;
+	z-index: -10;
+}
+
 .left::-webkit-scrollbar {
 	display: none;
 }
 
 .item {
 	font-size: 1.5em;
-	text-align: center;
+	text-align: left;
 	border: 1px solid;
 	margin: 4px;
 	padding: 2px;

@@ -3,7 +3,7 @@
 	{% include "item.js" %}
 {% endblock %}
 
-{% block title %}Scanny's account of <span id="count">{{ pantry_items|length }}</span> {{ item }}{% endblock %}
+{% block title %}Scanny's account of <span id="count">{{ pantry_items|length }}</span> {{ name }}{% endblock %}
 
 {% block item %}
 {% for item in pantry_items %}

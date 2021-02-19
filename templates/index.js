@@ -18,7 +18,7 @@ $(document).ready(function() {
 	$('.item').each(function(){
 		$(this).addClass('item-clickable');
 		$(this).click(function() {
-			document.location = '/item?name=' + $(this).attr('name');
+			document.location = '/item?id=' + $(this).attr('item_id');
 		});
 	});
 });

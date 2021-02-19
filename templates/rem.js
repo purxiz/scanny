@@ -2,7 +2,7 @@ $(document).ready(function() {
 	let last_item = null;
 	$('#last_item').click(function() {
 		if(!last_item) return;
-		document.location = '/item?name=' + last_item;
+		document.location = '/item?id=' + last_item;
 	});
 
 	focus_code_input();
@@ -46,7 +46,7 @@ $(document).ready(function() {
 						$('#not_found').show();
 						listen_for_continue_input();
 					} else {
-						last_item = response.name;
+						last_item = response.id;
 						$('#code_input').val('');
 						add_visual_item(response);
 					}

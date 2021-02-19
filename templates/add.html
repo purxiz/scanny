@@ -18,7 +18,10 @@
 {% block title %}Scanny New Items{% endblock %}
 {% block right %}
 <input type="text" class="ui-hidden-accessible" id="code_input">
-<input class="right-item" id="name" type='text' placeholder='Name...' autoComplete='off'/>
+<div class="right-item">
+    <textarea class="right-subitem" id="name" placeholder='Name...' autoComplete='off'></textarea>
+    <textarea class="right-subitem behind" id="name_complete" autoComplete="off" disabled></textarea>
+</div>
 <button class="right-item" id="submit" type="button">SUBMIT</button>
 <button class="right-item" type="button" onclick="document.location='/'">&#62; HOME</button>
 {% endblock %}
