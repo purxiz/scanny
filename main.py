@@ -21,7 +21,10 @@ class Barcode(db.Model):
 	item_id = db.Column(db.Integer, db.ForeignKey(Item.id))
 	code = db.Column(db.String(30))
 
-	
+#########################
+#	 Rendered Routes	#
+#########################
+
 @app.route('/')
 def index():
 	pantry_items = Item.query.join(PantryItem, isouter=True)\
@@ -33,31 +36,6 @@ def index():
 def rename():
 	item = Item.query.filter_by(id=request.args.get('item_id')).one()
 	return render_template('rename.html', name=item.name, id=request.args.get('item_id'))
-
-@app.route('/rename_by_id')
-def rename_by_id():
-	item = Item.query.filter_by(id=request.args.get('id')).one()
-	item.name = request.args.get('name').strip('\n')
-	try:
-		db.session.commit()
-	except Exception as err:
-		return jsonify({ "err": "unique_violation" })
-	return jsonify({ "name": item.name })
-
-@app.route('/rename_by_name')
-def rename_by_name():
-	print('renaming by name')
-	barcodes = Barcode.query.filter_by(item_id=request.args.get('id')).all()
-	pantry_items = PantryItem.query.filter_by(item_id=request.args.get('id')).all()
-	item = Item.query.filter_by(name=request.args.get('name').strip('\n')).one()
-	for barcode in barcodes:
-		barcode.item_id = item.id
-	for pantry_item in pantry_items:
-		pantry_item.item_id = item.id
-	item_to_remove = Item.query.filter_by(id=request.args.get('id')).one()
-	db.session.delete(item_to_remove)
-	db.session.commit()
-	return jsonify({"redirect": "/item?id=" + str(item.id)})
 
 @app.route('/add')
 def add():
@@ -80,12 +58,9 @@ def item():
 	name = Item.query.add_columns(Item.name).filter_by(id=request.args.get('id')).one()
 	return render_template('item.html', pantry_items=pantry_items, item=request.args.get('id'), name=name[1])
 
-@app.route('/item_most_likely')
-def item_most_likely():
-	item = Item.query.add_columns(Item.name).filter(Item.name.startswith(request.args.get('name'))).order_by(Item.name).offset(request.args.get('offset')).first()
-	if item is None:
-    		return jsonify({ "name": '' })
-	return jsonify({ "name" : item[1] })
+#########################
+#	    Add Routes	    #
+#########################
 
 @app.route('/add_by_id')
 def add_by_id():
@@ -121,6 +96,38 @@ def add_barcode_and_item():
 	db.session.commit()
 	return jsonify({ "name": item.name, "id": item.id, "purchase_date": pantry_item.purchase_date.strftime('%m-%d-%y %H:%M:%S') })
 
+#########################
+#	  Rename Routes		#
+#########################
+
+@app.route('/rename_by_id')
+def rename_by_id():
+	item = Item.query.filter_by(id=request.args.get('id')).one()
+	item.name = request.args.get('name').strip('\n')
+	try:
+		db.session.commit()
+	except Exception as err:
+		return jsonify({ "err": "unique_violation" })
+	return jsonify({ "name": item.name })
+
+@app.route('/rename_by_name')
+def rename_by_name():
+	barcodes = Barcode.query.filter_by(item_id=request.args.get('id')).all()
+	pantry_items = PantryItem.query.filter_by(item_id=request.args.get('id')).all()
+	item = Item.query.filter_by(name=request.args.get('name').strip('\n')).one()
+	for barcode in barcodes:
+		barcode.item_id = item.id
+	for pantry_item in pantry_items:
+		pantry_item.item_id = item.id
+	item_to_remove = Item.query.filter_by(id=request.args.get('id')).one()
+	db.session.delete(item_to_remove)
+	db.session.commit()
+	return jsonify({"redirect": "/item?id=" + str(item.id)})
+
+#########################
+#	  Remove Routes		#
+#########################
+
 @app.route('/remove_by_id')
 def remove_by_id():
 	try: 
@@ -141,6 +148,19 @@ def remove_by_barcode():
 	db.session.commit()
 	name = Item.query.add_columns(Item.name, Item.id).filter_by(id=oldest_item.item_id).one()
 	return jsonify({ "name": name[1], "id": name[2], "purchase_date": oldest_item.purchase_date.strftime('%m-%d-%y %H:%M:%S') })
+
+#########################
+#	  Utility Routes	#
+#########################
+
+@app.route('/item_most_likely')
+def item_most_likely():
+	item = Item.query.add_columns(Item.name).filter(Item.name.startswith(request.args.get('name'))).order_by(Item.name).offset(request.args.get('offset')).first()
+	if item is None:
+    		return jsonify({ "name": '' })
+	return jsonify({ "name" : item[1] })
+
+
 
 if __name__ == '__main__':
 	db.create_all()
