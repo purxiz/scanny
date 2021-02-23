@@ -1,25 +1,36 @@
 from flask import Flask, render_template, request, jsonify 
 from flask_sqlalchemy import SQLAlchemy
+from flask_migrate import Migrate
 import sys
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.sqlite'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
+migrate = Migrate(app, db, render_as_batch=True)
+
+class User(db.Model):
+	id = db.Column(db.Integer, primary_key=True)
+	username = db.Column(db.String(30), unique=True)
+	password = db.Column(db.String(100))
 
 class Item(db.Model):
 	id = db.Column(db.Integer, primary_key=True)
 	name = db.Column(db.String(100), unique=True)
+	user_id = db.Column(db.String(30), db.ForeignKey(User.id))
 
 class PantryItem(db.Model):
 	id = db.Column(db.Integer, primary_key=True)
 	item_id = db.Column(db.Integer, db.ForeignKey(Item.id))
 	purchase_date = db.Column(db.DateTime, server_default=db.func.now())
+	user_id = db.Column(db.String(30), db.ForeignKey(User.id))
 
 class Barcode(db.Model):
 	id = db.Column(db.Integer, primary_key=True)
 	item_id = db.Column(db.Integer, db.ForeignKey(Item.id))
 	code = db.Column(db.String(30))
+	user_id = db.Column(db.String(30), db.ForeignKey(User.id))
+
 
 #########################
 #	 Rendered Routes	#

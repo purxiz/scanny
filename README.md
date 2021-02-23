@@ -10,6 +10,8 @@ The program should be pretty self explanatory.
 The current dependencies are  
 * flask
 * flask_sqlalchemy
+* flask_migrate
+* flask_login
 
 To run in a development environment for testing, simply
 ```bash
@@ -19,12 +21,10 @@ flask run -h 0.0.0.0
 ```
 I recommend using -h 0.0.0.0 so you can access the webpage from across your LAN during development, especially if you are running the server on a raspberry pi.
 
-If you get an error regarding tables not existing, open a python3 shell with `python3` or just `python` if you're in a virtualenv, then:
+If you get an error regarding tables not existing then:
 
-```python
-from main import db
-db.create_all()
-exit()
+```bash
+flask db upgrade
 ```
 
 This will create the database and tables so you can run the app.
