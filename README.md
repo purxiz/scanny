@@ -107,3 +107,4 @@ I'll get around to these eventually
 - show total added on each item as it's added in current add session on add screen
 - Add a 'create grocery list' button or something that lists everything that has gone to 0 in the past configurable amount of time.
 - add keyboard shortcuts to focus the input and/or press the button at position 1-3 on the right side. Will need to add configuration for the buttons...
+- Move the database connection URI over to the configuration file to allow for easier database switching
