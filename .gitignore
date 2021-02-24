@@ -3,3 +3,4 @@ __pycache__/
 scanny.sock
 db.sqlite
 scanny_venv/
+.env

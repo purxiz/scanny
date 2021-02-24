@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block javascript %}
+	{% include "login.js" %}
+{% endblock %}
+
+{% block warn %}
+<div class="warn" id="warn_user" style="display:none;">Username not found, press UP to continue</div>
+<div class="warn" id="warn_pass" style="display:none;">Password was incorrect, press UP to continue</div>
+{% endblock %}
+
+{% block title %}Welcome to Scanny {{ message }}{% endblock %}
+
+{% block right %}
+<input class="right-item" id="username" type="text" placeholder="Username..." autoComplete="off" />
+<input class="right-item" id="password" type="password" placeholder="Password..." />
+<button class="right-item" id="login" type="button" >{{ message.upper() }}</button>
+{% endblock %}

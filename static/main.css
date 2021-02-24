@@ -9,6 +9,23 @@ a {
 	color: white;
 }
 
+.header {
+	display: flex;
+	justify-content: space-between;
+}
+
+.header-item {
+	flex: 1 33%;
+}
+
+.header-filler {
+	flex: 1 2 32%;
+}
+
+.user {
+	font-size: 2em;
+}
+
 @font-face {
 	font-family: ModeSeven;
 	src: url(assets/ModeSeven.ttf);
@@ -16,7 +33,7 @@ a {
 
 @media (orientation: landscape) and (-webkit-max-device-pixel-ratio: 1.5) {
 	.content {
-		position: absolute;
+		position: fixed;
 		top: 3em;
 		bottom: 10px;
 		width: 100%;
@@ -29,7 +46,7 @@ a {
 
 @media (orientation: portrait) or (-webkit-min-device-pixel-ratio: 2) {
 	.content {
-		position: absolute;
+		position: fixed;
 		top: 3em;
 		width: 100%;
 		display: flex;
@@ -44,6 +61,14 @@ a {
 
 .title {
 	text-align: center;
+	margin-top: 0;
+	font-size: 2em;
+	font-weight: bold;
+	white-space: nowrap;
+}
+
+button.right-item {
+	cursor: pointer;
 }
 
 .left {
@@ -56,7 +81,7 @@ a {
 	display: flex;
 	align-items: center;
 	align-content: center;
-	justify-content: space-around;
+	justify-content: space-between;
 	flex-direction: column;
 	overflow-y: hidden;
 }

@@ -3,14 +3,19 @@
 		<link type="text/css" rel="stylesheet" href="{{url_for('static', filename='main.css')}}" />
 		<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 		<script type="text/javascript">
+			{% include "shared.js" %}
 			{% block javascript %}{% endblock %}
 		</script>
 	</head>
 	<body>
 		{% block warn %}{% endblock %}
-		<h1 class="title">
-			{% block title %}{% endblock %}
-		</h1>
+		<div class="header">
+			<div class="user header-item"><a href="/logout">{{ user }}</a></div>
+			<span class="title header-item">
+				{% block title %}{% endblock %}
+			</span>
+			<span class="header-filler"></span>
+		</div>
 		<div class="content">
 			<div id="left" class="left">
 					{% block item %}{% endblock %}

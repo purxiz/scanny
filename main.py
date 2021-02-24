@@ -1,15 +1,44 @@
-from flask import Flask, render_template, request, jsonify 
+from flask import Flask, render_template, request, jsonify, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
+from flask_login import UserMixin, LoginManager, login_required, login_user, logout_user, current_user
+from dotenv import load_dotenv
+from hashlib import sha256
+from uuid import uuid4
+import config
 import sys
+import os
+
+load_dotenv()
 
 app = Flask(__name__)
+app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.sqlite'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 migrate = Migrate(app, db, render_as_batch=True)
+login_manager = LoginManager()
+login_manager.init_app(app)
 
-class User(db.Model):
+
+#########################
+#	Utility Functions	#
+#########################
+
+def hash_password(password):
+	salt = uuid4().hex
+	return sha256(salt.encode() + password.encode()).hexdigest() + '-' + salt
+
+def check_hashed_password(password, stored_password):
+	hash, salt = stored_password.split('-')
+	return hash == sha256(salt.encode() + password.encode()).hexdigest()
+
+
+#########################
+#	Database Classes 	#
+#########################
+
+class User(UserMixin, db.Model):
 	id = db.Column(db.Integer, primary_key=True)
 	username = db.Column(db.String(30), unique=True)
 	password = db.Column(db.String(100))
@@ -31,43 +60,84 @@ class Barcode(db.Model):
 	code = db.Column(db.String(30))
 	user_id = db.Column(db.String(30), db.ForeignKey(User.id))
 
+#########################
+#	 Login Handlers	    #
+#########################
+
+@login_manager.user_loader
+def load_user(user_id):
+	return User.query.filter_by(id=user_id).first()
+
+@login_manager.unauthorized_handler
+def unauthorized_handler():
+	message = 'Login/Register' if config.allow_registration else 'Login'
+	return render_template('login.html', message=message)
+
+@app.route('/login_or_register')
+def login_or_register():
+	user = User.query.filter_by(username=request.args.get('username')).first()
+	if user is None and config.allow_registration:
+		user = User(username=request.args.get('username'), password=hash_password(request.args.get('password')))
+		db.session.add(user)
+		db.session.commit()
+		login_user(user)
+		return jsonify({ "redirect": "/" })
+	elif user:
+		if check_hashed_password(request.args.get('password'), user.password):
+			login_user(user)
+			return jsonify({ "redirect": "/" })
+		else:
+			return jsonify({ "err": "password" })
+	return jsonify({ "err": "username" })
+
+@app.route('/logout')
+def logout():
+	logout_user();
+	return redirect(url_for('index'))
+
+
 
 #########################
 #	 Rendered Routes	#
 #########################
 
 @app.route('/')
+@login_required
 def index():
 	pantry_items = Item.query.join(PantryItem, isouter=True)\
 		.add_columns(Item.name, Item.id, db.func.count(PantryItem.item_id).label('count'))\
 		.group_by(Item.id).order_by(Item.name).all()
-	return render_template('index.html', pantry_items=pantry_items)
+	return render_template('index.html', user=current_user.username, pantry_items=pantry_items)
 
 @app.route('/rename')
+@login_required
 def rename():
 	item = Item.query.filter_by(id=request.args.get('item_id')).one()
-	return render_template('rename.html', name=item.name, id=request.args.get('item_id'))
+	return render_template('rename.html', user=current_user.username, name=item.name, id=request.args.get('item_id'))
 
 @app.route('/add')
+@login_required
 def add():
 	pantry_items = PantryItem.query.join(Item)\
 		.add_columns(Item.name, PantryItem.purchase_date, Item.id)\
 		.order_by(PantryItem.purchase_date.desc())\
 		.limit(20).all()
-	return render_template('add.html', pantry_items=pantry_items)
+	return render_template('add.html', user=current_user.username, pantry_items=pantry_items)
 
 @app.route('/rem')
+@login_required
 def rem():
-	return render_template('rem.html')
+	return render_template('rem.html', user=current_user.username)
 
 @app.route('/item')
+@login_required
 def item():
 	pantry_items = PantryItem.query.join(Item)\
 	.add_columns(Item.name, PantryItem.purchase_date)\
 	.order_by(PantryItem.purchase_date)\
 	.filter_by(id=request.args.get('id')).all()
 	name = Item.query.add_columns(Item.name).filter_by(id=request.args.get('id')).one()
-	return render_template('item.html', pantry_items=pantry_items, item=request.args.get('id'), name=name[1])
+	return render_template('item.html', user=current_user.username, pantry_items=pantry_items, item=request.args.get('id'), name=name[1])
 
 #########################
 #	    Add Routes	    #

@@ -38,3 +38,15 @@ $.add_visual_item = function(item) {
 		$('<div>').addClass('item').html(item.name + ' - ' + item.purchase_date).attr('item_id', item.id).item_clickable()
 	);
 };
+
+$.warn = function(warning, callback = null) {
+	$(warning).show();
+	$('input').blur();
+	$(document).keydown(function(e) {
+		if (e.key === 'Escape') {
+			$(warning).hide();
+			$(document).off();
+			if (callback) callback();
+		}
+	});
+}
