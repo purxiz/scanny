@@ -45,8 +45,10 @@ You can click on a grocery item on the home page to manually add/remove it.
 #### Configuration
 Check the config file as I'll probably forget to update this section of the readme, but at the moment only two options are supported. 
 
-require-login: if true, the app will require users to login to view the grocery list. Turn off for local hosted applications unless you've got nosy housemates on your LAN...  
-allow-registration: if true, the login screen doubles as a registration screen. If you enter a username that doesn't already have an account, an account will be created with the entered password. It is recommended that you enable this when someone wants to make an account, and then disable it afterwards. For safety, you can make all relevant accounts before exposing your app to the internet. You can also manually make accounts by entering some data into the sqlite3 db.sqlite.
+**require-login:** if true, the app will require users to login to view the grocery list. Turn off for local hosted applications unless you've got nosy housemates on your LAN...  
+**allow-registration:** if true, the login screen doubles as a registration screen. If you enter a username that doesn't already have an account, an account will be created with the entered password. It is recommended that you enable this when someone wants to make an account, and then disable it afterwards. 
+
+For safety, you can make all relevant accounts before exposing your app to the internet. You can also manually make accounts by entering some data into the sqlite3 db.sqlite.
 
 To manually add an account, just insert a new user with whatever username and a hashed and salted password. The password must of the format sha256(salt.encode() + password.encode()) + '-' + salt. I use hashlib for the sha256 function, and uuid.uuid4() for the salt. 
 
