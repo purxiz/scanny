@@ -2,5 +2,5 @@
 #	App Configuration	#
 #########################
 
-require_login = False
+require_login = True
 allow_registration = True
