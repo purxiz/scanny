@@ -14,6 +14,8 @@ The current dependencies are
 * flask_login
 * python-dotenv
 
+First you will need to create a .env file. it simply needs to have `SECRET_KEY="some_key"` in it. For development, you can use whatever value you like for `some_key`. For production, you should generate a random secret key in whatever manner is preferable to you. I am partial to python's `os.urandom(24)`.
+
 To run in a development environment for testing, simply
 ```bash
 cd scanny
@@ -39,6 +41,13 @@ Removing grocery items is pretty much the same. The oldest item will always be r
 
 You can click on a grocery item on the home page to manually add/remove it.
 
+#### Configuration
+Check the config file as I'll probably forget to update this section of the readme, but at the moment only two options are supported. 
+
+require-login: if true, the app will require users to login to view the grocery list. Turn off for local hosted applications unless you've got nosy housemates on your LAN...  
+allow-registration: if true, the login screen doubles as a registration screen. If you enter a username that doesn't already have an account, an account will be created with the entered password. It is recommended that you enable this when someone wants to make an account, and then disable it afterwards. For safety, you can make all relevant accounts before exposing your app to the internet. You can also manually make accounts by entering some data into the sqlite3 db.sqlite.
+
+To manually add an account, just insert a new user with whatever username and a hashed and salted password. The password must of the format sha256(salt.encode() + password.encode()) + '-' + salt. I use hashlib for the sha256 function, and uuid.uuid4() for the salt. 
 
 #### Important Notes
 At some points, the program will prompt you to press "Up" to continue. That actually means you have to press the escape key. I am using a very small keyboard for this project and only had an "up" keycap available. In the future I might make these warning messages configurable.
