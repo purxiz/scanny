@@ -88,7 +88,7 @@ However, given the extremely small scope of this project and the expected value 
 
 
 #### Roadmap
-The only feature I have planned is to add some very simple sort of login / session handling. 
+~~The only feature I have planned is to add some very simple sort of login / session handling.~~ (done) 
 
 I don't intend for the data in this app to ever be truly secret, since it's a glorified grocery list, but it would be nice to be minimally protected from people stumbling across your URL and editing your grocery inventory.
 
