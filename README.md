@@ -24,10 +24,11 @@ flask run -h 0.0.0.0
 ```
 I recommend using -h 0.0.0.0 so you can access the webpage from across your LAN during development, especially if you are running the server on a raspberry pi.
 
-If you get an error regarding tables not existing then:
+If you get an error regarding tables not existing then open a python shell with `python3` or `python` depending on your system, and do
 
-```bash
-flask db upgrade
+```python
+from main import db
+db.create_all()
 ```
 
 This will create the database and tables so you can run the app.
