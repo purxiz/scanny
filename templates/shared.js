@@ -42,16 +42,18 @@ $.add_visual_item = function(item) {
 $.warn = function(warning, continue_callback = null, confirm_callback=null) {
 	$(warning).show();
 	$('input').blur();
-	$(document).keydown(function(e) {
+	$(document).on('keydown.warnings',function(e) {
 		if (e.key === '{{ config.continue_key }}') {
 			$(warning).hide();
-			$(document).off('keydown');
+			$(document).off('.warnings');
 			if (continue_callback) continue_callback();
 		}
 		else if (e.key === '{{ config.confirm_key }}') {
-			$(warning).hide();
-			$(document).off('keydown');
-			if (confirm_callback) confirm_callback();
+			if(confirm_callback) {
+				$(warning).hide();
+				$(document).off('.warnings');
+				confirm_callback();
+			}
 		}
 	});
 }
@@ -60,7 +62,7 @@ $.warn = function(warning, continue_callback = null, confirm_callback=null) {
 $(document).ready(function() {
 	let offset = 0;
 	let prev_offset = 0;
-	$(document).keyup(function(e) {
+	$(document).keydown(function(e) {
 		prev_offset = offset;
 		if(e.key === '{{ config.page_up_key }}') {
 			offset = offset - $('#left').height() - 25;
