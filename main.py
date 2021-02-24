@@ -12,6 +12,7 @@ import os
 load_dotenv()
 
 app = Flask(__name__)
+app.config['LOGIN_DISABLED'] = not config.require_login
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.sqlite'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -107,13 +108,13 @@ def index():
 	pantry_items = Item.query.join(PantryItem, isouter=True)\
 		.add_columns(Item.name, Item.id, db.func.count(PantryItem.item_id).label('count'))\
 		.group_by(Item.id).order_by(Item.name).all()
-	return render_template('index.html', user=current_user.username, pantry_items=pantry_items)
+	return render_template('index.html', user=getattr(current_user, 'username', ''), pantry_items=pantry_items)
 
 @app.route('/rename')
 @login_required
 def rename():
 	item = Item.query.filter_by(id=request.args.get('item_id')).one()
-	return render_template('rename.html', user=current_user.username, name=item.name, id=request.args.get('item_id'))
+	return render_template('rename.html', user=getattr(current_user, 'username', ''), name=item.name, id=request.args.get('item_id'))
 
 @app.route('/add')
 @login_required
@@ -122,12 +123,12 @@ def add():
 		.add_columns(Item.name, PantryItem.purchase_date, Item.id)\
 		.order_by(PantryItem.purchase_date.desc())\
 		.limit(20).all()
-	return render_template('add.html', user=current_user.username, pantry_items=pantry_items)
+	return render_template('add.html', user=getattr(current_user, 'username', ''), pantry_items=pantry_items)
 
 @app.route('/rem')
 @login_required
 def rem():
-	return render_template('rem.html', user=current_user.username)
+	return render_template('rem.html', user=getattr(current_user, 'username', ''))
 
 @app.route('/item')
 @login_required
@@ -137,13 +138,14 @@ def item():
 	.order_by(PantryItem.purchase_date)\
 	.filter_by(id=request.args.get('id')).all()
 	name = Item.query.add_columns(Item.name).filter_by(id=request.args.get('id')).one()
-	return render_template('item.html', user=current_user.username, pantry_items=pantry_items, item=request.args.get('id'), name=name[1])
+	return render_template('item.html', user=getattr(current_user, 'username', ''), pantry_items=pantry_items, item=request.args.get('id'), name=name[1])
 
 #########################
 #	    Add Routes	    #
 #########################
 
 @app.route('/add_by_id')
+@login_required
 def add_by_id():
 	pantry_item = PantryItem(item_id=request.args.get('id'))
 	db.session.add(pantry_item)
@@ -152,6 +154,7 @@ def add_by_id():
 	return jsonify({ "name": name[1], "purchase_date": pantry_item.purchase_date.strftime('%m-%d-%y %H:%M:%S') })
 
 @app.route('/add_by_barcode')
+@login_required
 def add_by_barcode():
 	try:
 		item = Barcode.query.add_columns(Item.id, Item.name).filter_by(code=request.args.get('code')).join(Item).one()
@@ -163,6 +166,7 @@ def add_by_barcode():
 	return jsonify({ "name" : item[2], "item_id": item.id, "purchase_date": pantry_item.purchase_date.strftime('%m-%d-%y %H:%M:%S') })
 
 @app.route('/add_barcode_and_item')
+@login_required
 def add_barcode_and_item():
 	name = request.args.get('name').strip('\n')
 	item = Item.query.filter_by(name=name).first();
@@ -182,6 +186,7 @@ def add_barcode_and_item():
 #########################
 
 @app.route('/rename_by_id')
+@login_required
 def rename_by_id():
 	item = Item.query.filter_by(id=request.args.get('id')).one()
 	item.name = request.args.get('name').strip('\n')
@@ -192,6 +197,7 @@ def rename_by_id():
 	return jsonify({ "name": item.name })
 
 @app.route('/rename_by_name')
+@login_required
 def rename_by_name():
 	barcodes = Barcode.query.filter_by(item_id=request.args.get('id')).all()
 	pantry_items = PantryItem.query.filter_by(item_id=request.args.get('id')).all()
@@ -210,6 +216,7 @@ def rename_by_name():
 #########################
 
 @app.route('/remove_by_id')
+@login_required
 def remove_by_id():
 	try: 
 		oldest_item = PantryItem.query.order_by(PantryItem.purchase_date).filter_by(item_id=request.args.get('id')).limit(1).one()
@@ -220,6 +227,7 @@ def remove_by_id():
 	return jsonify({ "msg": "success" })
 
 @app.route('/remove_by_barcode')
+@login_required
 def remove_by_barcode():
 	try: 
 		oldest_item = PantryItem.query.join(Barcode, PantryItem.item_id == Barcode.item_id).order_by(PantryItem.purchase_date).filter_by(code=request.args.get('code')).limit(1).one()
@@ -235,13 +243,12 @@ def remove_by_barcode():
 #########################
 
 @app.route('/item_most_likely')
+@login_required
 def item_most_likely():
 	item = Item.query.add_columns(Item.name).filter(Item.name.startswith(request.args.get('name'))).order_by(Item.name).offset(request.args.get('offset')).first()
 	if item is None:
     		return jsonify({ "name": '' })
 	return jsonify({ "name" : item[1] })
-
-
 
 if __name__ == '__main__':
 	db.create_all()

@@ -12,6 +12,7 @@ The current dependencies are
 * flask_sqlalchemy
 * flask_migrate
 * flask_login
+* python-dotenv
 
 To run in a development environment for testing, simply
 ```bash
