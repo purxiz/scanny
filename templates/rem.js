@@ -11,7 +11,7 @@ $(document).ready(function() {
 		$('#code_input').blur();
 		$(document).keydown(function(e) {
 			if(e.key === 'Escape') {
-				$(document).off();
+				$(document).off('keydown');
 				$('.warn').hide();
 				focus_code_input();
 			}

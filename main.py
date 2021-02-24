@@ -21,6 +21,13 @@ migrate = Migrate(app, db, render_as_batch=True)
 login_manager = LoginManager()
 login_manager.init_app(app)
 
+#########################
+# 	 Template Config	#
+#########################
+
+@app.context_processor
+def inject_config():
+	return dict(config=config)
 
 #########################
 #	Utility Functions	#

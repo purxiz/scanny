@@ -45,8 +45,34 @@ $.warn = function(warning, callback = null) {
 	$(document).keydown(function(e) {
 		if (e.key === 'Escape') {
 			$(warning).hide();
-			$(document).off();
+			$(document).off('keydown');
 			if (callback) callback();
 		}
 	});
 }
+
+{% if config.left_pane_scroll %}
+$(document).ready(function() {
+	let offset = 0;
+	let prev_offset = 0;
+	$(document).keyup(function(e) {
+		prev_offset = offset;
+		if(e.key === '{{ config.page_up_key }}') {
+			offset = offset - $('#left').height() - 25;
+		}
+		if(e.key === '{{ config.page_dn_key }}') {
+			offset = offset + $('#left').height() - 25;
+		}
+		if(offset < 0) offset = 0;
+		else if(offset > $('#left')[0].scrollHeight - $('#left').height()) offset = $('#left')[0].scrollHeight - $('#left').height();
+		if(offset !== prev_offset) {
+			$('#left').animate({
+				scrollTop: offset
+			});
+		}
+	});
+	$('#left').scroll(function() {
+		offset = $('#left').scrollTop();
+	});
+});
+{% endif %}

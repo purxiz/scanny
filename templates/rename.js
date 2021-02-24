@@ -11,12 +11,12 @@ $(document).ready(function() {
 		$(document).keydown(function(e) {
 			if (e.key === 'Escape') {
 				$(warning).hide();
-				$(document).off();
+				$(document).off('keydown');
 				focus_name_and_listen();
 			}
 			else if (e.key === 'Enter') {
 				$(warning).hide();
-				$(document).off();
+				$(document).off('keydown');
 				rename_item_and_rebase();
 			}
 		})

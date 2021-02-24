@@ -35,7 +35,7 @@ $(document).ready(function() {
 		$(document).keydown(function(e) {
 			console.log(e.key);
 			if(e.key === 'Escape') {
-				$(document).off();
+				$(document).off('keydown');
 				$('.warn').hide();
 				$('#name').keyup(function(e) {
 					if(e.key === 'Enter') {
