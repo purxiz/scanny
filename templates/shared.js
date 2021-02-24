@@ -73,11 +73,13 @@ $(document).ready(function() {
 		if(offset !== prev_offset) {
 			$('#left').animate({
 				scrollTop: offset
-			});
+			}, 250);
 		}
 	});
 	$('#left').scroll(function() {
-		offset = $('#left').scrollTop();
+		if (!$(this).is(':animated')) {
+			offset = $('#left').scrollTop();
+		}
 	});
 });
 {% endif %}
