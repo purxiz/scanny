@@ -14,6 +14,9 @@ The current dependencies are
 * flask_login
 * python-dotenv
 
+In case I don't update this list, you can also install the requirements with `pip install -r requirements.txt`.  
+In the future, I'll learn to use wheels or something to distribute better.
+
 First you will need to create a .env file. it simply needs to have `SECRET_KEY="some_key"` in it. For development, you can use whatever value you like for `some_key`. For production, you should generate a random secret key in whatever manner is preferable to you. I am partial to python's `os.urandom(24)`.
 
 To run in a development environment for testing, simply
