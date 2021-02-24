@@ -73,7 +73,7 @@ $(document).ready(function() {
 		if(offset !== prev_offset) {
 			$('#left').animate({
 				scrollTop: offset
-			}, 250);
+			}, 250, 'linear');
 		}
 	});
 	$('#left').scroll(function() {
