@@ -102,3 +102,4 @@ I now have 2 more planned features, ~~the ability to edit the names of items~~ (
 I'll get around to these eventually
 
 - show total added on each item as it's added in current add session on add screen
+- Add a 'create grocery list' button or something that lists everything that has gone to 0 in the past configurable amount of time.
