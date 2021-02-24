@@ -3,7 +3,6 @@ $(document).ready(function() {
 	focus_code_input();
 
 	$('.item').item_clickable();
-	console.log('hi');
 
 	function add_new_item(name, code) {
 		$('#name').off('');
@@ -16,9 +15,8 @@ $(document).ready(function() {
 			}
 		}).then(function(response) {
 			if(response.err && response.err === 'unique_violation') {
-				$('#unique_violation').show();
 				$('#name').val('');
-				listen_for_name_input();
+				listen_for_name_input('#unique_violation');
 				return;
 			}
 			$.add_visual_item(response);
@@ -28,26 +26,21 @@ $(document).ready(function() {
 		});
 	}
 
-	function listen_for_name_input() {
+	function listen_for_name_input(warning) {
 		$('#name').blur();
 		$('#code_input').blur();
-		let complete_string = '';
-		$(document).keydown(function(e) {
-			console.log(e.key);
-			if(e.key === 'Escape') {
-				$(document).off('keydown');
-				$('.warn').hide();
-				$('#name').keyup(function(e) {
-					if(e.key === 'Enter') {
-						add_new_item($('#name').val(), $('#code_input').val());
-					}
-				});
-				$('#name').inline_complete();
-				$('#name').focus();
-				$('#submit').click(function(e) {
+		$.warn(warning,
+		function() {
+			$('#name').keyup(function(e) {
+				if(e.key === '{{ config.confirm_key }}') {
 					add_new_item($('#name').val(), $('#code_input').val());
-				});
-			}
+				}
+			});
+			$('#name').inline_complete();
+			$('#name').focus();
+			$('#submit').click(function(e) {
+				add_new_item($('#name').val(), $('#code_input').val());
+			});
 		});
 	}
 
@@ -59,7 +52,7 @@ $(document).ready(function() {
 			}, 20);
 		});
 		$('#code_input').keyup(function(e) {
-			if(e.key === 'Enter') {
+			if(e.key === '{{ config.confirm_key }}') {
 				$.ajax({
 					url: '/add_by_barcode',
 					data: {
@@ -68,8 +61,7 @@ $(document).ready(function() {
 				}).then(function(response) {
 					if(response.err && response.err === 'not_found') {
 						$('#code_input').off();
-						$('#not_found').show();
-						listen_for_name_input();
+						listen_for_name_input('#not_found');
 					} else {
 						$('#code_input').val('');
 						$.add_visual_item(response);

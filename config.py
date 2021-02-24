@@ -2,6 +2,14 @@
 #	App Configuration	#
 #########################
 
+# main keys, continue will be used to ignore/acknowledge warnings, while confirm will be used to send fields
+# The visual names will be used to refer to the keys in GUI elements, in case of different keycaps/custom layouts
+# The continue key is also used for autocomplete, pressing it while an autocomplete is showing will autofill the text input
+continue_key = 'Escape'
+continue_key_visual_name = 'Up'
+confirm_key = 'Enter'
+confirm_key_visual_name = 'Down'
+
 # require_login
 # If true, the app will require login before viewing the grocery list
 require_login = True

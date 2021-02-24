@@ -10,7 +10,7 @@ jQuery.fn.extend({
 	inline_complete: function() {
 		let complete_string = '';
 		$(this).keyup(function(e) {
-			if(e.key ===  'Escape') {
+			if(e.key ===  '{{ config.continue_key }}') {
 				$(this).val(complete_string);
 				$('#name_complete').val('');
 			}
@@ -39,14 +39,19 @@ $.add_visual_item = function(item) {
 	);
 };
 
-$.warn = function(warning, callback = null) {
+$.warn = function(warning, continue_callback = null, confirm_callback=null) {
 	$(warning).show();
 	$('input').blur();
 	$(document).keydown(function(e) {
-		if (e.key === 'Escape') {
+		if (e.key === '{{ config.continue_key }}') {
 			$(warning).hide();
 			$(document).off('keydown');
-			if (callback) callback();
+			if (continue_callback) continue_callback();
+		}
+		else if (e.key === '{{ config.confirm_key }}') {
+			$(warning).hide();
+			$(document).off('keydown');
+			if (confirm_callback) confirm_callback();
 		}
 	});
 }

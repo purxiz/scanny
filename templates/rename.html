@@ -4,8 +4,8 @@
 {% endblock %}
 
 {% block warn %}
-<div class="warn" id="blank" style="display:none;">Name cannot be blank<br> Press up</div>
-<div class="warn" id="unique_violation" style="display:none;">Name in Use, up to retry, down to continue</div>
+<div class="warn" id="blank" style="display:none;">Name cannot be blank<br> Press {{ config.continue_key_visual_name }}</div>
+<div class="warn" id="unique_violation" style="display:none;">Name in Use, {{ config.continue_key_visual_name }} to retry, {{ config.confirm_key_visual_name }} to submit</div>
 {% endblock %}
 
 {% block title %}Renaming <span id="title_name">{{ name }}</span>{% endblock %}

@@ -4,32 +4,18 @@ $(document).ready(function() {
 		rename_item();
 	});
 
-	function warn(warning) {
-		$(warning).show();
-		$('#name').off();
-		$('#name').blur();
-		$(document).keydown(function(e) {
-			if (e.key === 'Escape') {
-				$(warning).hide();
-				$(document).off('keydown');
-				focus_name_and_listen();
-			}
-			else if (e.key === 'Enter') {
-				$(warning).hide();
-				$(document).off('keydown');
-				rename_item_and_rebase();
-			}
-		})
-	}
-
 	function rename_item_and_rebase() {
 		rename_item('/rename_by_name');
 	}
 
 	function rename_item(url = null) {
-		console.log('renaming ' + $('#name').val());
 		if($('#name').val().replace('\n', '').length < 1) {
-			warn('#blank');
+			$.warn('#blank',
+			function() {
+				focus_name_and_listen();
+			}, function() {
+				rename_item_and_rebase();
+			});
 			return;
 		}
 		$.ajax({
@@ -39,12 +25,18 @@ $(document).ready(function() {
 				name: $('#name').val()
 			}
 		}).then(function(response) {
-			console.log(response);
 			if(response.redirect) {
 				window.location.href = response.redirect;
 			}
 			if(response.err && response.err === 'unique_violation') {
-				warn('#unique_violation');
+				$('#name').off();
+				$('#name').blur();
+				$.warn('#unique_violation',
+				function() {
+					focus_name_and_listen();
+				}, function() {
+					rename_item_and_rebase();
+				});
 				return;
 			}
 			$.add_visual_item({
@@ -68,7 +60,7 @@ $(document).ready(function() {
 		$('#name').inline_complete();
 
 		$('#name').keyup(function(e) {
-			if(e.key === 'Enter') {
+			if(e.key === '{{ config.confirm_key }}') {
 				rename_item();
 			}
 		});

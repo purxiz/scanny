@@ -2,13 +2,13 @@ $(document).ready(function() {
 	$('#username').focus();
 
 	$('#username').keyup(function(e) {
-		if(e.key === 'Enter') {
+		if(e.key === '{{ config.confirm_key }}') {
 			$('#password').focus();
 		}
 	});
 
 	$('#password').keyup(function(e) {
-		if(e.key === 'Enter') {
+		if(e.key === '{{ config.confirm_key }}') {
 			attempt_login();
 		}
 	});

@@ -7,17 +7,6 @@ $(document).ready(function() {
 
 	focus_code_input();
 
-	function listen_for_continue_input() {
-		$('#code_input').blur();
-		$(document).keydown(function(e) {
-			if(e.key === 'Escape') {
-				$(document).off('keydown');
-				$('.warn').hide();
-				focus_code_input();
-			}
-		});
-	}
-
 	function focus_code_input() {
 		$('#code_input').focus();
 		$('#code_input').blur(function() {
@@ -26,7 +15,7 @@ $(document).ready(function() {
 			}, 20);
 		});
 		$('#code_input').keyup(function(e) {
-			if(e.key === 'Enter') {
+			if(e.key === '{{ config.confirm_key }}') {
 				$.ajax({
 					url: '/remove_by_barcode',
 					data: {
@@ -35,8 +24,11 @@ $(document).ready(function() {
 				}).then(function(response) {
 					if(response.err && response.err === 'none_exists') {
 						$('#code_input').off();
-						$('#not_found').show();
-						listen_for_continue_input();
+						$('#code_input').blur();
+						$.warn('#not_found', function() {
+							$('#code_input').val('');
+							focus_code_input();
+						});
 					} else {
 						last_item = response.id;
 						$('#code_input').val('');

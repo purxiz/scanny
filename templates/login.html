@@ -4,8 +4,8 @@
 {% endblock %}
 
 {% block warn %}
-<div class="warn" id="warn_user" style="display:none;">Username not found, press UP to continue</div>
-<div class="warn" id="warn_pass" style="display:none;">Password was incorrect, press UP to continue</div>
+<div class="warn" id="warn_user" style="display:none;">Username not found, press {{ config.continue_key_visual_name }} to continue</div>
+<div class="warn" id="warn_pass" style="display:none;">Password was incorrect, press {{ config.continue_key_visual_name }} to continue</div>
 {% endblock %}
 
 {% block title %}Welcome to Scanny {{ message }}{% endblock %}

@@ -5,8 +5,8 @@
 {% endblock %}
 
 {% block warn %}
-<div class="warn" id="unique_violation" style="display:none;">That name is already in use, try again</div>
-<div class="warn" id="not_found" style="display:none;">Not Found in database, press UP to add Name</div>
+<div class="warn" id="unique_violation" style="display:none;">Name already in use, press {{ config.continue_key_visual_name }} to try again</div>
+<div class="warn" id="not_found" style="display:none;">Not Found in database, press {{ config.continue_key_visual_name }} to add Name</div>
 {% endblock %}
 
 {% block item %}

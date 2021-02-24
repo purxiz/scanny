@@ -28,7 +28,6 @@ $(document).ready(function() {
 
 	function inc_or_dec(val) {
 		let amount = parseInt($('#count').html()) + val;
-		console.log(amount);
 		if (amount < 0) return;
 		$('#count').html(amount);
 	}
@@ -43,5 +42,4 @@ $(document).ready(function() {
 	function remove_visual_item(item) {
 		$('#left').children().last().remove();
 	}
-
 });
